@@ -1,7 +1,7 @@
 import com.cloudbees.opscenter.context.remote.RemoteDirectory
 import com.cloudbees.opscenter.context.remote.RemotePath
 
-def call(String controllerName,String jobPath){
+def call(String controllerNameAndJobPath){
 
     /* The controller name or path to resolve.  "target"= controller_name, "child" = job_path/job_name
      Note: Does not work if you put the controller name only; the full path to the target job is required. `//` is important as prefix
