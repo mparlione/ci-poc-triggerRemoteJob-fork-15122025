@@ -1,0 +1,34 @@
+import com.cloudbees.opscenter.context.remote.RemoteDirectory
+import com.cloudbees.opscenter.context.remote.RemotePath
+import hudson.security.ACL
+import jenkins.model.Jenkins
+
+// @NonCPS is required here to prevent serialization issues with ACLs and internal objects
+@NonCPS
+String resolveInstanceId(String controllerPath) {
+    String instanceId = null
+    // Elevate privileges to SYSTEM to ensure visibility of the remote path
+    ACL.impersonate(ACL.SYSTEM, {
+        RemotePath resolvedPath = RemoteDirectory.walk(controllerPath)
+        if (resolvedPath != null) {
+            instanceId = resolvedPath.getInstanceId()
+        }
+    })
+
+    return instanceId
+}
+
+node {
+    stage('Resolve ID') {
+        String controllerPath = "///target/child2"
+        String id = resolveInstanceId(controllerPath)
+
+        if (id) {
+            println "Instance ID for '${controllerPath}': ${id}"
+            triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: "jenkins://${id}/child2"
+
+        } else {
+            error "Could not resolve path: ${controllerPath} (Check path correctness)"
+        }
+    }
+}
