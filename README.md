@@ -34,7 +34,8 @@ Documentation says "reconnect," but it must be re-provisioning [CloudBees docume
     - Controller name: `my-target-controller`
     - This name must match the values defined in `Jenkinsfile-source.groovy`:
       ```groovy
-         triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")                //build 'child'
+         triggerRemoteJob remotePathMissing: stopAsFailure(), 
+                remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")
       ```
 ## Source Pipeline
 
