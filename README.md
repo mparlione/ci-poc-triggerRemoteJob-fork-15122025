@@ -40,13 +40,21 @@
       ```groovy
          triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")                //build 'child'
       ```
+### Source  Pipeline
+
+On the **Source Controller**, create a pipeline with the following configuration:
+
+- **Job name**: `my-source-job`
+- **Pipeline definition**: *Pipeline from SCM* (this repo)
+- **Jenkinsfile**: `Jenkinsfile-source.groovy`
+
 
 ### Target Pipeline
 
 On the **Target Controller**, create a pipeline with the following configuration:
 
 - **Job name**: `my-target-job`
-- **Pipeline definition**: *Pipeline from SCM*
+- **Pipeline definition**: *Pipeline from SCM* (this repo)
 - **Jenkinsfile**: `Jenkinsfile-target.groovy`
 
   
