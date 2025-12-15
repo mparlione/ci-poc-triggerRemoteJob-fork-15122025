@@ -22,6 +22,34 @@
 * Authentication mapping must be "trusted controllers" SYSTEM <-> SYSTEM Mapping https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/client-and-managed-controllers/trigger-jobs-across-controllers
 * The controllers must be re-provisioned after authentication mappings on the Operations Center. Documentation says "reconnect," but it must be re-provisioning https://docs.cloudbees.com/docs/cloudbees-ci/latest/secure/authentication-mapping#_change_the_authentication_mapping_strategy
 
+## Setup
+
+### Prerequisites
+- CJOC authentication mapping must be configured as **Trusted Controllers** with a **SYSTEM ↔ SYSTEM** mapping.  
+  See the CloudBees documentation:  
+  https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/client-and-managed-controllers/trigger-jobs-across-controllers
+
+### Controllers
+
+1. **Source Controller**
+    - The controller name is arbitrary.
+
+2. **Target Controller**
+    - Controller name: `my-target-controller`
+    - This name must match the values defined in `Jenkinsfile-source.groovy`:
+      ```groovy
+         triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")                //build 'child'
+      ```
+
+### Target Pipeline
+
+On the **Target Controller**, create a pipeline with the following configuration:
+
+- **Job name**: `my-target-job`
+- **Pipeline definition**: *Pipeline from SCM*
+- **Jenkinsfile**: `Jenkinsfile-target.groovy`
+
+  
 # Links
 * https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/client-and-managed-controllers/trigger-jobs-across-controllers
 * https://docs.cloudbees.com/docs/cloudbees-ci/latest/secure/authentication-mapping
