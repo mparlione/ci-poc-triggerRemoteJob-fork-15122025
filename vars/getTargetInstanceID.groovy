@@ -3,7 +3,7 @@ import com.cloudbees.opscenter.context.remote.RemotePath
 
 /*  Resolves a Controller name and jpb path to an Controller instanceID
 controllerName=name of the target controller (for example "my-target-controller"),
-jobPath=job_path/job_name jobname path (from controller root, f.e "my-foldername/my-jobname")
+jobPath=job_path/job_name (from controller root, f.e "my-foldername/my-jobname")
 */
 @NonCPS
 def call(String controllerName,String jobPath){
