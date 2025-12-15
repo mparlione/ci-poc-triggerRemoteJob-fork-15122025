@@ -40,7 +40,7 @@
       ```groovy
          triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")                //build 'child'
       ```
-### Source  Pipeline
+### Source Pipeline
 
 On the **Source Controller**, create a pipeline with the following configuration:
 
