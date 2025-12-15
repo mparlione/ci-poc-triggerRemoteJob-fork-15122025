@@ -2,15 +2,15 @@
 
 ![flow.png](flow.png)
 
-## Pipelines
-* **[Parent Pipeline](Jenkinsfile-source.groovy)**: The initiating pipeline script that loads a shared library and executes the `triggerRemoteJob` step to start a job on another controller.
-* **[Child Pipeline](Jenkinsfile-target.groovy)**: The target pipeline script that defines parameters (e.g., `paramKey1`) and executes steps when triggered by an upstream process.
-* **[Jenkinsfile-source-raw.groovy](Jenkinsfile-source-raw.groovy)**: Pipeline for raw testing without shared library (requires script approval, because it's not behind a shared library) 
-
 ## Shared Library Functions & Steps
 * **`triggerRemoteJob`**: A pipeline step used to trigger a job on a remote controller. It requires a `remotePathUrl` and can optionally take parameters via `parameterFactories`.
 * **`getTargetInstanceID` (Shared Library `call` function)**: A function that takes a `controllerName` and `jobPath` as input. It uses `RemoteDirectory.walk` to resolve the path's instance ID and returns the fully constructed `jenkins://` URL needed to trigger the remote job.
 * **`resolveInstanceId`**: A helper function annotated with `@NonCPS` designed to elevate privileges to `ACL.SYSTEM` to ensure visibility when resolving a remote controller path into an instance ID.
+
+## Pipelines
+* **[Source Pipeline](Jenkinsfile-source.groovy)**: The initiating pipeline script that loads a shared library and executes the `triggerRemoteJob` step to start a job on another controller.
+* **[Target Pipeline](Jenkinsfile-target.groovy)**: The target pipeline script that defines parameters (e.g., `paramKey1`) and executes steps when triggered by an upstream process.
+* **[Target Pipeline (raw/for testing)](Jenkinsfile-source-raw.groovy)**: Pipeline for raw testing without shared library (requires script approval, because it's not behind a shared library) 
 
 ## Key Concepts & Parameters
 * **Remote URL Structure**: The specific URL format required by `triggerRemoteJob`, constructed as `jenkins://${resolvedPath.getInstanceId()}/${jobPath}`.
@@ -19,17 +19,16 @@
 * **`@NonCPS`**: An annotation required on certain methods (like those handling ACLs) to prevent serialization issues during pipeline execution.
 
 # Notes
-* Authentication mapping must be "trusted controllers" SYSTEM <-> SYSTEM Mapping https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/client-and-managed-controllers/trigger-jobs-across-controllers
-* The controllers must be re-provisioned after authentication mappings on the Operations Center. Documentation says "reconnect," but it must be re-provisioning https://docs.cloudbees.com/docs/cloudbees-ci/latest/secure/authentication-mapping#_change_the_authentication_mapping_strategy
 
-## Setup
+# Setup
 
-### Prerequisites
+## Prerequisites
 - CJOC authentication mapping must be configured as **Trusted Controllers** with a **SYSTEM ↔ SYSTEM** mapping.  
   See the CloudBees documentation:  
   https://docs.cloudbees.com/docs/cloudbees-ci-kb/latest/client-and-managed-controllers/trigger-jobs-across-controllers
+**Note**: The controllers must be re-provisioned after authentication mappings on the Operations Center. Documentation says "reconnect," but it must be re-provisioning https://docs.cloudbees.com/docs/cloudbees-ci/latest/secure/authentication-mapping#_change_the_authentication_mapping_strategy
 
-### Controllers
+## Controllers
 
 1. **Source Controller**
     - The controller name is arbitrary.
@@ -40,7 +39,7 @@
       ```groovy
          triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")                //build 'child'
       ```
-### Source Pipeline
+## Source Pipeline
 
 On the **Source Controller**, create a pipeline with the following configuration:
 
@@ -49,7 +48,7 @@ On the **Source Controller**, create a pipeline with the following configuration
 - **Jenkinsfile**: `Jenkinsfile-source.groovy`
 
 
-### Target Pipeline
+## Target Pipeline
 
 On the **Target Controller**, create a pipeline with the following configuration:
 
