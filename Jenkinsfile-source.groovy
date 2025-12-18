@@ -1,7 +1,7 @@
 env.SHARED_LIB_TAG="main"
 library identifier: "ci-shared-library@${env.SHARED_LIB_TAG}", retriever: modernSCM(
         [$class: 'GitSCMSource',
-         remote: 'https://github.com/cb-ci-templates/ci-poc-triggerRemoteJob.git'])
+         remote: 'https://github.com/mparlione/ci-poc-triggerRemoteJob-fork-15122025.git'])
 
 pipeline {
     agent none
@@ -10,7 +10,8 @@ pipeline {
             steps {
                 echo 'Hello World'
                 // Trigger parameterized job
-                triggerRemoteJob parameterFactories: [[$class: 'SimpleString', name: 'paramKey1', value: 'paramtValueFromparent']], remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")
+                // PSETDECI Org Controllers/c001
+                triggerRemoteJob parameterFactories: [[$class: 'SimpleString', name: 'paramKey1', value: 'paramtValueFromparent']], remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("PSETDECI Org Controllers/c001","maxpar-remote-trigger-test/triggerremotejob-caller-18122025")
 
                 // Trigger normal job, without parameters
                 // triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")
