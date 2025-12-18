@@ -11,7 +11,8 @@ pipeline {
                 echo 'Hello World'
                 // Trigger parameterized job
                 // PSETDECI Org Controllers/c001
-                triggerRemoteJob parameterFactories: [[$class: 'SimpleString', name: 'paramKey1', value: 'paramtValueFromparent']], remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("PSETDECI Org Controllers/c001","maxpar-remote-trigger-test/triggerremotejob-caller-18122025")
+                // triggerremotejob-callee-18122025
+                triggerRemoteJob parameterFactories: [[$class: 'SimpleString', name: 'paramKey1', value: 'paramtValueFromparent']], remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("PSETDECI Org Controllers/c001","maxpar-remote-trigger-test/triggerremotejob-callee-18122025")
 
                 // Trigger normal job, without parameters
                 // triggerRemoteJob remotePathMissing: stopAsFailure(), remotePathUrl: getTargetInstanceID("my-target-controller","my-target-job")
